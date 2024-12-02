@@ -3,11 +3,11 @@ from ultralytics import YOLO
 import os
 
 # Configuration
-DATA_YAML = 'path/to/your/data.yaml'  # Path to your dataset configuration
+DATA_YAML = '/kaggle/working/Mario-Detection-5/data.yaml'  # Path to your dataset configuration
 PRETRAINED_WEIGHTS = 'yolov11s.pt'     # Pretrained weights (small model)
 NUM_EPOCHS = 150
 BATCH_SIZE = 16
-IMAGE_SIZE = 1440
+IMAGE_SIZE = 1280
 
 def prepare_dataset(yaml_path, train_images, val_images, test_images, num_classes, class_names):
     """
@@ -87,7 +87,7 @@ def test_model(model):
 
 def main():
     # Prepare dataset (ensure data.yaml is correctly set up)
-    prepare_dataset()
+    prepare_dataset('/kaggle/working/Mario-Detection-5/train/images', '/kaggle/working/Mario-Detection-5/valid/images', '/kaggle/working/Mario-Detection-5/test/images', 1, "['mario']")
     
     # Train the model
     trained_model = train_model()
