@@ -87,13 +87,16 @@ def test_model(model):
 
 def main():
     # Prepare dataset (ensure data.yaml is correctly set up)
-    prepare_dataset('/kaggle/working/Mario-Detection-5/train/images', '/kaggle/working/Mario-Detection-5/valid/images', '/kaggle/working/Mario-Detection-5/test/images', 1, "['mario']")
+    prepare_dataset(DATA_YAML, '/kaggle/working/Mario-Detection-5/train/images', '/kaggle/working/Mario-Detection-5/valid/images', '/kaggle/working/Mario-Detection-5/test/images', 1, "['mario']")
     
     # Train the model
     trained_model = train_model()
     
     # Validate on validation dataset
     validation_results = validate_model(trained_model)
+
+    print("Validation Results:")
+    print(validation_results)
     
     # Test on test dataset
     test_results = test_model(trained_model)
