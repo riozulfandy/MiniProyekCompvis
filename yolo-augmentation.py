@@ -32,16 +32,27 @@ class YOLOAugmentation:
         
         # Define augmentation pipeline
         self.transform = A.Compose([
-            # Image-level augmentations
-            A.RandomBrightnessContrast(p=0.5),
-            A.HorizontalFlip(p=0.5),
-            A.RandomRotate90(p=0.5),
-            A.RandomFog(p=0.3),
-            A.GaussNoise(p=0.3),            
-        ], bbox_params=A.BboxParams(
-            format='yolo', 
-            label_fields=['class_labels']
-        ))
+        # Flipping
+        A.HorizontalFlip(p=0.5),
+        A.VerticalFlip(p=0.5),
+        # Rotation
+        A.Rotate(limit=15, p=0.5),  # Rotation between -15° and +15°
+        # Shearing
+        A.Affine(shear=(-10, 10), p=0.5),  # Shear ±10° for horizontal and vertical
+        # Hue adjustment
+        A.HueSaturationValue(hue_shift_limit=15, sat_shift_limit=0, val_shift_limit=0, p=0.5), 
+        # Brightness and Contrast
+        A.RandomBrightnessContrast(brightness_limit=0.15, contrast_limit=0.15, p=0.5),
+        # Exposure adjustment (treated as additional brightness)
+        A.RandomGamma(gamma_limit=(90, 110), p=0.5),  # Equivalent to -10% to +10%
+        # Blur
+        A.GaussianBlur(blur_limit=(3, 5), p=0.5),  # Approximate blur up to 2.5px
+        # Noise
+        A.GaussNoise(var_limit=(0.001, 0.0065), p=0.5),  # Noise up to 0.65%
+    ], bbox_params=A.BboxParams(
+        format='yolo',
+        label_fields=['class_labels']
+    ))
     
     def read_yolo_labels(self, label_path):
         """
