@@ -130,10 +130,10 @@ class YOLOAugmentation:
 # Example usage
 if __name__ == "__main__":
     augmenter = YOLOAugmentation(
-        img_dir='path/to/original/images',
-        label_dir='path/to/original/labels',
-        output_img_dir='path/to/augmented/images',
-        output_label_dir='path/to/augmented/labels',
+        img_dir='/kaggle/working/Mario-Detection-5/train/images',
+        label_dir='/kaggle/working/Mario-Detection-5/train/labels',
+        output_img_dir='/kaggle/working/Mario-Detection-5/train/images_aug',
+        output_label_dir='/kaggle/working/Mario-Detection-5/train/labels_aug',
         num_augmentations=5
     )
     augmenter.augment_dataset()
