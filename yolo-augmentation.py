@@ -93,25 +93,33 @@ class YOLOAugmentation:
                 class_labels = [int(label[0]) for label in labels]
                 bboxes = [label[1:] for label in labels]
 
+                # Pre-clip bounding boxes
+                bboxes = self.clip_bounding_boxes(bboxes)
+
                 for i in range(self.num_augmentations):
-                    augmented = self.transform(image=image, bboxes=bboxes, class_labels=class_labels)
+                    try:
+                        augmented = self.transform(image=image, bboxes=bboxes, class_labels=class_labels)
 
-                    # Clip bounding boxes to valid range
-                    clipped_bboxes = self.clip_bounding_boxes(augmented["bboxes"])
+                        # Post-clip bounding boxes
+                        clipped_bboxes = self.clip_bounding_boxes(augmented["bboxes"])
 
-                    if not clipped_bboxes:
-                        print(f"No valid bounding boxes for {img_filename} augmentation {i}. Skipping.")
+                        if not clipped_bboxes:
+                            print(f"No valid bounding boxes for {img_filename} augmentation {i}. Skipping.")
+                            continue
+
+                        aug_image = cv2.cvtColor(augmented["image"], cv2.COLOR_RGB2BGR)
+                        aug_filename = f"{os.path.splitext(img_filename)[0]}_aug_{i}.jpg"
+                        aug_img_path = os.path.join(self.img_dir, aug_filename)
+
+                        cv2.imwrite(aug_img_path, aug_image)
+
+                        aug_labels = [[class_label] + bbox for class_label, bbox in zip(augmented["class_labels"], clipped_bboxes)]
+                        aug_label_path = os.path.join(self.label_dir, f"{os.path.splitext(label_filename)[0]}_aug_{i}.txt")
+                        self.write_yolo_labels(aug_label_path, aug_labels)
+
+                    except ValueError as e:
+                        print(f"Augmentation error for {img_filename}, augmentation {i}: {e}")
                         continue
-
-                    aug_image = cv2.cvtColor(augmented["image"], cv2.COLOR_RGB2BGR)
-                    aug_filename = f"{os.path.splitext(img_filename)[0]}_aug_{i}.jpg"
-                    aug_img_path = os.path.join(self.img_dir, aug_filename)
-
-                    cv2.imwrite(aug_img_path, aug_image)
-
-                    aug_labels = [[class_label] + bbox for class_label, bbox in zip(augmented["class_labels"], clipped_bboxes)]
-                    aug_label_path = os.path.join(self.label_dir, f"{os.path.splitext(label_filename)[0]}_aug_{i}.txt")
-                    self.write_yolo_labels(aug_label_path, aug_labels)
 
 
 # Example usage
