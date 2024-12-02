@@ -6,16 +6,16 @@ import os
 class YOLOAugmentation:
     def __init__(self, img_dir, label_dir, num_augmentations=5):
         """
-        Initialize YOLO dataset augmentation class
+        Initialize YOLO dataset augmentation class.
         
-        :param img_dir: Directory containing original images
-        :param label_dir: Directory containing YOLO format label files
-        :param num_augmentations: Number of augmentations to generate per image
+        :param img_dir: Directory containing original images.
+        :param label_dir: Directory containing YOLO format label files.
+        :param num_augmentations: Number of augmentations to generate per image.
         """
         self.img_dir = img_dir
         self.label_dir = label_dir
         self.num_augmentations = num_augmentations
-        
+
         # Define augmentation pipeline
         self.transform = A.Compose(
             [
@@ -36,16 +36,25 @@ class YOLOAugmentation:
         )
 
     def read_yolo_labels(self, label_path):
+        """
+        Read YOLO labels from a file.
+        """
         with open(label_path, "r") as f:
             labels = [list(map(float, line.strip().split())) for line in f.readlines()]
         return labels
 
     def write_yolo_labels(self, label_path, labels):
+        """
+        Write YOLO labels to a file.
+        """
         with open(label_path, "w") as f:
             for label in labels:
                 f.write(" ".join(map(str, label)) + "\n")
 
     def clip_bounding_boxes(self, bboxes):
+        """
+        Clip bounding box coordinates to ensure they stay in the range [0.0, 1.0].
+        """
         clipped_bboxes = []
         for bbox in bboxes:
             x_center, y_center, width, height = bbox
@@ -64,6 +73,9 @@ class YOLOAugmentation:
         return clipped_bboxes
 
     def augment_dataset(self):
+        """
+        Perform dataset augmentation.
+        """
         for img_filename in os.listdir(self.img_dir):
             if img_filename.endswith((".jpg", ".png", ".jpeg")):
                 img_path = os.path.join(self.img_dir, img_filename)
