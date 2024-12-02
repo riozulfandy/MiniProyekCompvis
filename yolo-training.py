@@ -5,7 +5,7 @@ import os
 # Configuration
 DATA_YAML = '/kaggle/working/Mario-Detection-5/data.yaml'  # Path to your dataset configuration
 PRETRAINED_WEIGHTS = 'yolo11s.pt'     # Pretrained weights (small model)
-NUM_EPOCHS = 150
+NUM_EPOCHS = 60
 BATCH_SIZE = 16
 IMAGE_SIZE = 1280
 
