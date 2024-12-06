@@ -6,7 +6,7 @@ import os
 DATA_YAML = 'path/to/your/data.yaml'  # Path to your dataset configuration
 TRAINED_WEIGHTS = 'yolov5s.pt'     # Pretrained weights (small model)
 
-def prepare_dataset():
+def prepare_dataset(yaml_path, train_images, val_images, test_images, num_classes, class_names):
     """
     Prepare dataset configuration file (data.yaml)
     
@@ -20,7 +20,15 @@ def prepare_dataset():
     names: ['class1', 'class2', ...]  # class names
     ```
     """
-    pass  # Placeholder for dataset preparation
+    # Prepare data.yaml
+    with open(yaml_path, 'w') as f:
+        f.write(f"train: {train_images}\n")
+        f.write(f"val: {val_images}\n")
+        f.write(f"test: {test_images}\n")
+        f.write(f"nc: {num_classes}\n")
+        f.write(f"names: {class_names}\n")
+    
+    print(f"Dataset configuration saved to {yaml_path}")
 
 def test_model(model):
     """
