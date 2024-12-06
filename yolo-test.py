@@ -3,8 +3,8 @@ from ultralytics import YOLO
 import os
 
 # Configuration
-DATA_YAML = 'path/to/your/data.yaml'  # Path to your dataset configuration
-TRAINED_WEIGHTS = 'yolov5s.pt'     # Pretrained weights (small model)
+DATA_YAML = '/kaggle/working/MarioHTV.v1i.yolov11/data.yaml'  # Path to your dataset configuration
+TRAINED_WEIGHTS = 'best.pt'     # Pretrained weights (small model)
 
 def prepare_dataset(yaml_path, train_images, val_images, test_images, num_classes, class_names):
     """
@@ -50,14 +50,11 @@ def test_model(model):
 def main():
     # Load the YOLO model
     model = YOLO(TRAINED_WEIGHTS)
+
+    prepare_dataset(DATA_YAML, 'p', 'p', '/kaggle/working/MarioHTV.v1i.yolov11/train', 1, "['mario']")
     
     # Test the model
     test_metrics = test_model(model)
     
-    # Print test metrics
-    print("Test Metrics:")
-    for metric, value in test_metrics.items():
-        print(f"{metric}: {value}")
-
 if __name__ == "__main__":
     main()
