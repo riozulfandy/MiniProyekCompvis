@@ -51,7 +51,7 @@ def main():
     # Load the YOLO model
     model = YOLO(TRAINED_WEIGHTS)
 
-    prepare_dataset(DATA_YAML, 'p', 'p', '/kaggle/working/MarioHTV.v1i.yolov11/train', 1, "['mario']")
+    prepare_dataset(DATA_YAML, '/kaggle/working/MarioHTV.v1i.yolov11/train', '/kaggle/working/MarioHTV.v1i.yolov11/train', '/kaggle/working/MarioHTV.v1i.yolov11/train', 1, "['mario']")
     
     # Test the model
     test_metrics = test_model(model)
